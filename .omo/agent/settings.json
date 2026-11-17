@@ -1,0 +1,10 @@
+{
+  "defaultProvider": "llmconnector",
+  "defaultModel": "llmproxy/moonshotai/kimi-k3.1-pro",
+  "defaultThinkingLevel": "max",
+  "retry": {
+    "enabled": true,
+    "modelFallback": true,
+    "fallbackRevertPolicy": "never"
+  }
+}

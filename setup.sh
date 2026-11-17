@@ -2,93 +2,94 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ZSHRC="$HOME/.zshrc"
+OMO_ROOT="$HOME/.omo"
+AGENT_DIR="$OMO_ROOT/agent"
+SECRETS_DIR="$AGENT_DIR/secrets"
+TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 
-echo "=== OpenCode + Oh My OpenAgent Setup ==="
-echo ""
+echo "=== OMO Native v5: ai-prod + LLMConnector ==="
+echo
 
-# ─── 1. Collect API credentials ─────────────────────────────────────────────
-# These get written to ~/.zshrc so OpenCode can read them via {env:...}
-# Press Enter to skip any value — existing entries in ~/.zshrc will be kept.
-
-echo "Before we start, we need your API credentials."
-echo "Get your API keys from the internal AI proxy portal (ask the IT team for the link)."
-echo "Press Enter to skip — existing values in ~/.zshrc won't be overwritten."
-echo ""
-
-read -rp "OPENAI_BASE_URL  (OpenAI-compatible base URL): " OPENAI_BASE_URL
-read -rp "OPENAI_API_KEY  (OpenAI API key):             " OPENAI_API_KEY
-read -rp "ANTHROPIC_BASE_URL  (Anthropic-compatible base URL): " ANTHROPIC_BASE_URL
-read -rp "ANTHROPIC_AUTH_TOKEN  (Anthropic API key):           " ANTHROPIC_AUTH_TOKEN
-
-  echo ""
-
-# ─── 2. Write env vars to ~/.zshrc ──────────────────────────────────────────
-# Only update values that were provided. Empty input = keep existing.
-
-touch "$ZSHRC"
-ENV_UPDATED=0
-
-for VAR_NAME in OPENAI_BASE_URL OPENAI_API_KEY ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN; do
-  VAR_VALUE="${!VAR_NAME}"
-  if [[ -n "$VAR_VALUE" ]]; then
-    sed -i '' "/^export ${VAR_NAME}=/d" "$ZSHRC" 2>/dev/null || true
-    echo "export ${VAR_NAME}=\"${VAR_VALUE}\"" >> "$ZSHRC"
-    export "${VAR_NAME}"
-    echo "  ✓ ${VAR_NAME} updated"
-    ENV_UPDATED=1
-  else
-    echo "  – ${VAR_NAME} skipped (keeping existing)"
+if command -v bunx >/dev/null 2>&1; then
+  bunx oh-my-openagent@latest install --platform=native --no-tui
+elif command -v npx >/dev/null 2>&1; then
+  NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]')"
+  if [[ "$NODE_MAJOR" -lt 24 ]]; then
+    echo "Node.js 24 or newer is required. Upgrade Node.js or install Bun, then rerun setup." >&2
+    exit 1
   fi
-done
-
-if [[ $ENV_UPDATED -eq 1 ]]; then
-  echo ""
-  echo "✓ Environment variables saved to $ZSHRC"
+  npx oh-my-openagent@latest install --platform=native --no-tui
 else
-  echo ""
-  echo "– No environment variables changed"
-fi
-echo ""
-
-# ─── 3. Check/Install OpenCode ──────────────────────────────────────────────
-
-if command -v opencode &>/dev/null; then
-  echo "✓ OpenCode already installed: $(opencode --version)"
-else
-  echo "Installing OpenCode..."
-  npm install -g opencode
-  echo "✓ OpenCode installed"
+  echo "Install Bun (recommended) or Node.js 24+ with npm, then rerun setup." >&2
+  exit 1
 fi
 
-echo ""
+hash -r
+if ! command -v omo >/dev/null 2>&1; then
+  echo "OMO was installed but is not on PATH. Open a new terminal or apply the installer's PATH fix, then rerun setup." >&2
+  exit 1
+fi
 
-# ─── 4. Install Oh My OpenAgent ──────────────────────────────────────────────
-# NOTE: The installer will ask you interactive questions.
-#       Choose whatever you want — the config from this repo overrides everything.
+VERSION="$(omo --version)"
+if [[ "$VERSION" != omo\ 5.* ]]; then
+  echo "Expected OMO Native v5, found: $VERSION" >&2
+  echo "Apply the installer's PATH fix for the legacy omo command, then rerun setup." >&2
+  exit 1
+fi
 
-echo "Installing Oh My OpenAgent..."
-echo "  → Choose any options during the setup — our config will override them."
-echo ""
-bunx oh-my-openagent@latest install --no-tui --claude=no --gemini=no --copilot=no
+echo "Configuring $AGENT_DIR"
+mkdir -p "$AGENT_DIR" "$SECRETS_DIR"
+chmod 700 "$SECRETS_DIR"
 
-echo ""
+backup_file() {
+  local path="$1"
+  if [[ -f "$path" ]]; then
+    cp -p "$path" "$path.backup-$TIMESTAMP"
+    echo "Backed up $(basename "$path")"
+  fi
+}
 
-# ─── 5. Copy configs from this repo ─────────────────────────────────────────
+install_config() {
+  local source="$1"
+  local destination="$2"
+  backup_file "$destination"
+  cp "$source" "$destination"
+  chmod 600 "$destination"
+}
 
-echo "Copying configs..."
+install_config "$SCRIPT_DIR/.omo/agent/models.json" "$AGENT_DIR/models.json"
+install_config "$SCRIPT_DIR/.omo/agent/settings.json" "$AGENT_DIR/settings.json"
+install_config "$SCRIPT_DIR/.omo/omo.jsonc" "$OMO_ROOT/omo.jsonc"
 
-mkdir -p ~/.config/opencode
+umask 077
+prompt_secret() {
+  local label="$1"
+  local path="$2"
+  local value=""
 
-cp "$SCRIPT_DIR/.config/opencode/opencode.jsonc" ~/.config/opencode/opencode.jsonc
-cp "$SCRIPT_DIR/.config/opencode/oh-my-openagent.json" ~/.config/opencode/oh-my-openagent.json
+  if [[ -s "$path" ]]; then
+    read -r -s -p "$label [Enter keeps saved token]: " value
+  else
+    read -r -s -p "$label: " value
+  fi
+  echo
 
-echo "✓ Configs copied"
-echo ""
+  if [[ -n "$value" ]]; then
+    printf '%s\n' "$value" >"$path"
+    chmod 600 "$path"
+    echo "Saved $label"
+  elif [[ -s "$path" ]]; then
+    echo "Kept saved $label"
+  else
+    echo "$label is required for first-time setup." >&2
+    exit 1
+  fi
+}
 
-# ─── Done ────────────────────────────────────────────────────────────────────
+prompt_secret "ai-prod API token" "$SECRETS_DIR/ai-prod.key"
+prompt_secret "LLMConnector API token" "$SECRETS_DIR/llmconnector.key"
 
-echo "=== Setup Complete ==="
-echo ""
-echo "Run 'source ~/.zshrc' or open a new terminal, then verify with:"
-echo "   opencode --version"
+echo
+echo "=== Setup complete: $VERSION ==="
+echo "Run 'omo' to start."
+echo "Run 'omo doctor' to inspect the installation."

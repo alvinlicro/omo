@@ -1,0 +1,234 @@
+// OMO Native v5 providers for the company gateways.
+// Tokens live outside this repository in ~/.omo/agent/secrets/.
+{
+  "disabledProviders": [
+    "anthropic",
+    "openai"
+  ],
+  "providers": {
+    "llmconnector": {
+      "name": "LLMConnector",
+      "baseUrl": "https://llmconnector-llmproxy-sunshine.3ona.co/openai/v1",
+      "api": "openai-completions",
+      "apiKey": {
+        "$file": "~/.omo/agent/secrets/llmconnector.key"
+      },
+      "models": [
+        {
+          "id": "llmproxy/moonshotai/kimi-k3.1-pro",
+          "name": "Kimi K3.1 Pro",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1048576,
+          "maxTokens": 1048576,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          }
+        },
+        {
+          "id": "llmproxy/openai/gpt-6.1-sol",
+          "name": "GPT-6.1 Sol",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 922000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          }
+        },
+        {
+          "id": "llmproxy/openai/gpt-6.1-terra",
+          "name": "GPT-6.1 Terra",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 922000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": "none",
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          }
+        },
+        {
+          "id": "llmproxy/openai/gpt-6-luna",
+          "name": "GPT-6 Luna",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 922000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": "none",
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          }
+        },
+        {
+          "id": "llmproxy/deepseek/deepseek-v4.1-flash-1017",
+          "name": "DeepSeek V4.1 Flash 1017",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1000000,
+          "maxTokens": 384000,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          }
+        },
+        {
+          "id": "llmproxy/zai/glm-5.3",
+          "name": "GLM-5.3",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 1000000,
+          "maxTokens": 131072,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          }
+        },
+        {
+          "id": "llmproxy/alicloud/qwen3.8-max",
+          "name": "Qwen3.8 Max",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1000000,
+          "maxTokens": 131072,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": null,
+            "xhigh": "xhigh",
+            "max": null
+          }
+        },
+        {
+          "id": "llmproxy/vertex/gemini-4-argon",
+          "name": "Gemini 4 Argon",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1048576,
+          "maxTokens": 65536,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": null,
+            "max": null
+          }
+        }
+      ]
+    },
+    "ai-prod": {
+      "name": "ai-prod",
+      "baseUrl": "https://ai-prod.crolabs-int.co/v1",
+      "api": "openai-responses",
+      "apiKey": {
+        "$file": "~/.omo/agent/secrets/ai-prod.key"
+      },
+      "models": [
+        {
+          "id": "openai.gpt-6-astra",
+          "name": "GPT-6 Astra",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1050000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          }
+        },
+        {
+          "id": "openai.gpt-6.1-sol",
+          "name": "GPT-6.1 Sol",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1050000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          }
+        },
+        {
+          "id": "openai.gpt-6.1-terra",
+          "name": "GPT-6.1 Terra",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1050000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": "none",
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          }
+        },
+        {
+          "id": "openai.gpt-6-luna",
+          "name": "GPT-6 Luna",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1050000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": "none",
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          }
+        }
+      ]
+    }
+  }
+}

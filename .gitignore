@@ -1,0 +1,8 @@
+# Track only the shared Native configuration; keep local runtime state out.
+!.omo/
+.omo/*
+!.omo/agent/
+.omo/agent/*
+!.omo/agent/models.json
+!.omo/agent/settings.json
+!.omo/omo.jsonc

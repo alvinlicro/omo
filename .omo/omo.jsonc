@@ -1,0 +1,260 @@
+// Team routing for OMO Native v5. Provider definitions live in agent/models.json.
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/omo.schema.json",
+  "[native]": {
+    "model_profile": "company",
+    "model_profiles": {
+      "company": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/moonshotai/kimi-k3.1-pro",
+            "reasoning": "max"
+          },
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6.1-sol",
+            "reasoning": "medium"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "medium"
+          }
+        ]
+      }
+    },
+    "agents": {
+      "explore": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/deepseek/deepseek-v4.1-flash-1017",
+            "reasoning": "low"
+          },
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6-luna",
+            "reasoning": "low"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6-luna",
+            "reasoning": "low"
+          }
+        ]
+      },
+      "librarian": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6-luna",
+            "reasoning": "low"
+          },
+          {
+            "model": "llmconnector/llmproxy/deepseek/deepseek-v4.1-flash-1017",
+            "reasoning": "low"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6-luna",
+            "reasoning": "low"
+          }
+        ]
+      },
+      "plan-consultant": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/moonshotai/kimi-k3.1-pro",
+            "reasoning": "max"
+          },
+          {
+            "model": "llmconnector/llmproxy/zai/glm-5.3",
+            "reasoning": "high"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "high"
+          }
+        ]
+      },
+      "plan-reviewer": {
+        "models": [
+          {
+            "model": "ai-prod/openai.gpt-6-astra",
+            "reasoning": "xhigh"
+          },
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6.1-sol",
+            "reasoning": "xhigh"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "xhigh"
+          }
+        ]
+      }
+    },
+    "categories": {
+      "architect": {
+        "models": [
+          {
+            "model": "ai-prod/openai.gpt-6-astra",
+            "reasoning": "high"
+          },
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6.1-sol",
+            "reasoning": "high"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "high"
+          }
+        ]
+      },
+      "visual-engineering": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/vertex/gemini-4-argon",
+            "reasoning": "low"
+          },
+          {
+            "model": "llmconnector/llmproxy/moonshotai/kimi-k3.1-pro",
+            "reasoning": "max"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "high"
+          }
+        ]
+      },
+      "ultrabrain": {
+        "models": [
+          {
+            "model": "ai-prod/openai.gpt-6-astra",
+            "reasoning": "max"
+          },
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6.1-sol",
+            "reasoning": "xhigh"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "xhigh"
+          }
+        ]
+      },
+      "deep-low": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6.1-sol",
+            "reasoning": "medium"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "medium"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-terra",
+            "reasoning": "high"
+          }
+        ]
+      },
+      "deep-high": {
+        "models": [
+          {
+            "model": "ai-prod/openai.gpt-6-astra",
+            "reasoning": "high"
+          },
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6.1-sol",
+            "reasoning": "xhigh"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "xhigh"
+          }
+        ]
+      },
+      "artistry": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/moonshotai/kimi-k3.1-pro",
+            "reasoning": "max"
+          },
+          {
+            "model": "llmconnector/llmproxy/vertex/gemini-4-argon",
+            "reasoning": "low"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "high"
+          }
+        ]
+      },
+      "quick": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6-luna",
+            "reasoning": "low"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6-luna",
+            "reasoning": "low"
+          },
+          {
+            "model": "llmconnector/llmproxy/deepseek/deepseek-v4.1-flash-1017",
+            "reasoning": "low"
+          }
+        ]
+      },
+      "unspecified-low": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/alicloud/qwen3.8-max",
+            "reasoning": "medium"
+          },
+          {
+            "model": "llmconnector/llmproxy/openai/gpt-6.1-terra",
+            "reasoning": "medium"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-terra",
+            "reasoning": "medium"
+          }
+        ]
+      },
+      "unspecified-high": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/zai/glm-5.3",
+            "reasoning": "max"
+          },
+          {
+            "model": "llmconnector/llmproxy/moonshotai/kimi-k3.1-pro",
+            "reasoning": "max"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "high"
+          }
+        ]
+      },
+      "writing": {
+        "models": [
+          {
+            "model": "llmconnector/llmproxy/vertex/gemini-4-argon",
+            "reasoning": "low"
+          },
+          {
+            "model": "llmconnector/llmproxy/moonshotai/kimi-k3.1-pro",
+            "reasoning": "high"
+          },
+          {
+            "model": "ai-prod/openai.gpt-6.1-sol",
+            "reasoning": "low"
+          }
+        ]
+      }
+    },
+    "git_master": {
+      "commit_footer": false,
+      "include_co_authored_by": false
+    }
+  },
+  "_migrations": [
+    "2026-08-reasoning-unification"
+  ]
+}
