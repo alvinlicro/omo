@@ -10,15 +10,15 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 echo "=== OMO Native v5: ai-prod + LLMConnector ==="
 echo
 
-if command -v bunx >/dev/null 2>&1; then
-  bunx oh-my-openagent@latest install --platform=native --no-tui
-elif command -v npx >/dev/null 2>&1; then
+if command -v bun >/dev/null 2>&1; then
+  bun add -g omo-ai
+elif command -v npm >/dev/null 2>&1; then
   NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]')"
   if [[ "$NODE_MAJOR" -lt 24 ]]; then
     echo "Node.js 24 or newer is required. Upgrade Node.js or install Bun, then rerun setup." >&2
     exit 1
   fi
-  npx oh-my-openagent@latest install --platform=native --no-tui
+  npm i -g omo-ai
 else
   echo "Install Bun (recommended) or Node.js 24+ with npm, then rerun setup." >&2
   exit 1
@@ -26,14 +26,14 @@ fi
 
 hash -r
 if ! command -v omo >/dev/null 2>&1; then
-  echo "OMO was installed but is not on PATH. Open a new terminal or apply the installer's PATH fix, then rerun setup." >&2
+  echo "OMO was installed but is not on PATH. Open a new terminal or add the global Bun/npm bin directory to PATH, then rerun setup." >&2
   exit 1
 fi
 
 VERSION="$(omo --version)"
 if [[ "$VERSION" != omo\ 5.* ]]; then
   echo "Expected OMO Native v5, found: $VERSION" >&2
-  echo "Apply the installer's PATH fix for the legacy omo command, then rerun setup." >&2
+  echo "A legacy omo command still shadows Native. Follow README.md's repair steps, then rerun setup." >&2
   exit 1
 fi
 
