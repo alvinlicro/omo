@@ -23,7 +23,7 @@ From this repository, run:
 
 The installer:
 
-1. Installs OMO Native v5 (`omo-ai`) through the official Native installer.
+1. Installs OMO Native v5 directly from the `omo-ai` package (`bun add -g omo-ai`, or `npm i -g omo-ai`).
 2. Backs up any existing OMO configuration it replaces.
 3. Installs the fixed ai-prod and LLMConnector provider configuration and team model routing.
 4. Prompts for the two tokens without displaying them.
@@ -83,7 +83,7 @@ Refresh team configuration or replace a token:
 
 Re-running setup is safe. Existing files receive timestamped backups before replacement, and an empty token prompt preserves the saved token.
 
-If `omo --version` prints an old bare version such as `4.19.4`, a legacy OpenCode-edition command still shadows Native. Re-run `./setup.sh`; the Native installer removes that stale command. If it prints a PATH fix instead, apply that fix and open a new terminal.
+If `omo --version` prints an old bare version such as `4.19.4`, a legacy OpenCode-edition command still shadows Native. Run `bunx oh-my-openagent@latest install --platform=native --no-tui` (or `npx oh-my-openagent@latest install --platform=native --no-tui`) once to remove the stale command, then rerun `./setup.sh`. If `omo` is not on PATH, add the global Bun/npm bin directory to PATH and open a new terminal.
 
 If a smoke test returns an authentication error, rerun setup and enter a fresh token for that gateway. If both gateways fail, check VPN/internal-network access first.
 
